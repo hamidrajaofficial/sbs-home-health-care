@@ -1,0 +1,115 @@
+import { useParams, Link, Navigate } from 'react-router-dom';
+import { services } from '@/src/data/services';
+import { motion } from 'motion/react';
+import { CheckCircle2, ArrowLeft, Zap, HeartPulse } from 'lucide-react';
+import CTASection from '../components/sections/CTASection';
+import ServiceHero from '../components/sections/ServiceHero';
+import Stats from '../components/sections/Stats';
+import ServiceOverview from '../components/sections/ServiceOverview';
+import WhatWeDoServices from '../components/sections/WhatWeDoServices';
+import WhatYouWillGet from '../components/sections/WhatYouWillGet';
+import TrustSection from '../components/sections/TrustSection';
+import HowItWorksSteps from '../components/sections/HowItWorksSteps';
+import ServingSizes from '../components/sections/ServingSizes';
+import NextStepCTA from '../components/sections/NextStepCTA';
+import LocationSection from '../components/sections/LocationSection';
+import SoftwareWeUse from '../components/sections/SoftwareWeUse';
+import SpecialtiesPreview from '../components/sections/SpecialtiesPreview';
+import CustomerReviews from '../components/sections/CustomerReviews';
+import FAQ from '../components/sections/FAQ';
+import BillingOnboardingSection from '../components/sections/BillingOnboardingSection';
+import DedicatedRCMSupportSection from '../components/sections/DedicatedRCMSupportSection';
+
+export default function ServiceDetail() {
+  const { slug } = useParams<{ slug: string }>();
+  const service = services.find(s => s.slug === slug);
+
+  if (!service) {
+    return <Navigate to="/" replace />;
+  }
+
+  return (
+    <div>
+      <ServiceHero 
+        title=""
+        highlightedTitle={service.title}
+        subtitle="Healthcare Virtual Assistant"
+        description={service.fullDescription}
+        imageSrc={service.heroImage}
+        ctaPrimary={{ label: "Hire This Service", href: "/contact" }}
+      />
+
+      <div className="relative z-20">
+        <Stats />
+      </div>
+      
+      <ServiceOverview 
+        bgColor="bg-section-bg"
+        title={service.overviewTitle}
+        headingHighlight={service.overviewHeadingHighlight}
+        description={service.overviewDescription}
+      />
+
+      <WhatWeDoServices 
+        bgColor="bg-white"
+        badge="Our Specialized Responsibilities"
+        title={<>{service.title} <span className="text-primary italic">Responsibilities and Tasks</span></>}
+        items={service.whatWeDo}
+      />
+
+      <ServingSizes bgColor="bg-section-bg" />
+
+      <WhatYouWillGet 
+        bgColor="bg-white"
+        title={`What You Get for ${service.title}`}
+        benefits={service.benefits}
+      />
+      
+      <TrustSection bgColor="bg-section-bg" />
+
+      <NextStepCTA bgColor="bg-white" />
+
+      <HowItWorksSteps bgColor="bg-section-bg" />
+
+      {service.slug === 'medical-billing-virtual-assistant' && (
+        <>
+          <BillingOnboardingSection 
+            id="how-it-works-billing"
+            bgColor="bg-white"
+            badge="How It Works"
+            titlePart1="Efficient Billing Team Onboarding for "
+            titleHighlight="Maximized Reimbursements"
+            subtitle="We start by understanding your needs, matching you with pre-vetted professionals, and conducting consulted onboarding using our signature framework, ensuring long-term success and improved focus for your practice."
+            showCta={true}
+          />
+          <DedicatedRCMSupportSection 
+            id="rcm-support"
+            bgColor="bg-section-bg"
+            eyebrow="Dedicated Home Health Support"
+            pricingText="Started at $7/hr"
+            certificationText="HIPAA Certified Staff"
+            title="Get a Dedicated Billing Specialist for "
+            titleHighlight="Dedicated Home Health Support"
+            planRate="7"
+            ctaLink="/contact"
+          />
+        </>
+      )}
+
+      <SoftwareWeUse bgColor="bg-white" />
+      <LocationSection bgColor="bg-section-bg" />
+
+      <SpecialtiesPreview bgColor="bg-white" />
+
+      <CustomerReviews bgColor="bg-section-bg" />
+
+      <FAQ bgColor="bg-white" items={service.faqItems} />
+
+      <CTASection 
+        bgColor="bg-section-bg"
+        title={<>Optimize Your <span className="text-primary italic">{service.title}</span> Workflow Today</>}
+        subtitle={`Join healthcare leaders who have transformed their ${service.title} operations with our specialized virtual assistants.`}
+      />
+    </div>
+  );
+}
